@@ -5,7 +5,15 @@ using System.Text;
 
 namespace Essperta.RawRabbit.Extensions
 {
-	public class CustomMessageContext : IMessageContext
+	public interface ICustomMessageContext : IMessageContext
+	{
+		Guid TenantId { get; }
+		Guid UserId { get; }
+		string TenantExternalId { get; }
+		string UserExternalId { get; }
+	}
+
+	public class CustomMessageContext : ICustomMessageContext
 	{
 		public Guid GlobalRequestId { get; set; }
 		public Guid TenantId { get; set; }

@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using RawRabbit;
+using RawRabbit.Pipe;
 using Shared;
 using System.Threading.Tasks;
 
@@ -27,7 +28,7 @@ namespace Publisher.Controllers
 				Description = "Essperta education description"
 			};
 
-			await this.client.PublishAsync(command);
+			await this.client.PublishAsync(command, (publishContext) => { });
 
 			return this.Ok("Poslano");
 		}
