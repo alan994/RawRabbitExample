@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using RawRabbit.Configuration.Exchange;
 using RawRabbit.DependencyInjection.ServiceCollection;
 using RawRabbit.Enrichers.MessageContext;
 using RawRabbit.Instantiation;
@@ -19,6 +20,7 @@ namespace Publisher
 		public void ConfigureServices(IServiceCollection services)
 		{
 			services.AddControllers();
+
 			services.AddRawRabbit(new RawRabbit.Instantiation.RawRabbitOptions()
 			{
 				ClientConfiguration = new RawRabbit.Configuration.RawRabbitConfiguration()
@@ -27,7 +29,13 @@ namespace Publisher
 					Username = "guest",
 					Password = "guest",
 					Port = 5672,
-					VirtualHost = "/"
+					VirtualHost = "/",
+					Exchange = new RawRabbit.Configuration.GeneralExchangeConfiguration()
+					{
+						Type = ExchangeType.Topic,
+						AutoDelete = false,
+						Durable = true
+					}
 				},
 				Plugins = p => p.UseMessageContext<CustomMessageContext>()
 			});

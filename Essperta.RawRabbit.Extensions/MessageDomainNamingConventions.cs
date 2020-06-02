@@ -1,4 +1,5 @@
-﻿using RawRabbit.Common;
+﻿using Essperta.RawRabbit.Extensions.Utils;
+using RawRabbit.Common;
 using System;
 using System.Collections.Generic;
 using System.Reflection;
@@ -8,6 +9,10 @@ namespace Essperta.RawRabbit.Extensions
 {
 	public class MessageDomainNamingConventions : NamingConventions
 	{
+		public MessageDomainNamingConventions()
+		{
+
+		}
 		public MessageDomainNamingConventions(string defaultNamespace)
 		{
             var assemblyName = Assembly.GetEntryAssembly().GetName().Name;

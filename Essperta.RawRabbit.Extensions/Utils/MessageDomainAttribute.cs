@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Essperta.RawRabbit.Extensions
+namespace Essperta.RawRabbit.Extensions.Utils
 {
 	[AttributeUsage(AttributeTargets.Class)]
 	public class MessageDomainAttribute : Attribute
