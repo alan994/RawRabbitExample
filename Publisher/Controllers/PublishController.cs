@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Essperta.RawRabbit.Extensions;
+using Essperta.RawRabbit.Extensions.Publisher;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using RawRabbit;
 using RawRabbit.Pipe;
@@ -11,12 +13,12 @@ namespace Publisher.Controllers
 	public class PublishController : Controller
 	{
 		private ILogger<PublishController> logger;
-		private readonly IBusClient client;
+		private readonly IBusPublisher publisher;
 
-		public PublishController(ILogger<PublishController> logger, IBusClient client)
+		public PublishController(ILogger<PublishController> logger, IBusPublisher publisher)
 		{
 			this.logger = logger;
-			this.client = client;
+			this.publisher = publisher;
 		}
 
 		[HttpGet("createEducation/essperta")]
@@ -28,7 +30,10 @@ namespace Publisher.Controllers
 				Description = "Essperta education description"
 			};
 
-			await this.client.PublishAsync(command, (publishContext) => { });
+			await this.publisher.SendAsync(command, new CustomMessageContext()
+			{
+				
+			});
 
 			return this.Ok("Poslano");
 		}

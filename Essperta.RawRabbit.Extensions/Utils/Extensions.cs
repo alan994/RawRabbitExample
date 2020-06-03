@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using RawRabbit.Common;
 using RawRabbit.Configuration;
 using RawRabbit.DependencyInjection.ServiceCollection;
 using RawRabbit.Enrichers.MessageContext;
@@ -60,7 +61,11 @@ namespace Essperta.RawRabbit.Extensions.Utils
 			services.AddRawRabbit(new RawRabbitOptions()
 			{
 				ClientConfiguration = rawRabbitConfiguration,
-				Plugins = p => p.UseMessageContext<CustomMessageContext>()
+				Plugins = p => p.UseMessageContext<CustomMessageContext>(),
+				DependencyInjection = ioc =>
+				{
+					//ioc.AddSingleton<INamingConventions>(new MessageDomainNamingConventions(rawRabbitConfiguration));
+				}
 			});
 			return services;
 		}
