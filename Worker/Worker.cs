@@ -3,9 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using Essperta.RawRabbit.Extensions;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using RawRabbit;
+using RawRabbit.Common;
 using Shared;
 
 namespace Worker
@@ -29,12 +31,16 @@ namespace Worker
 			//	await Task.Delay(1000, stoppingToken);
 			//}
 
-			await client.SubscribeAsync<CreateEducation>(CreateEducationHandler);
+			await client.SubscribeAsync<CreateEducation, CustomMessageContext>(CreateEducationHandler, ctx =>
+			{
+				ctx.UseSubscribeConfiguration(config => config.OnDeclaredExchange(exchange => exchange.WithName("Some_exchange_name")));
+			});
 		}
 
-		private async Task CreateEducationHandler(CreateEducation arg)
+		private async Task<Ack> CreateEducationHandler(CreateEducation arg, CustomMessageContext messageContext)
 		{
-			this._logger.LogInformation("Create education handler. {@Payload}", arg);
+			this._logger.LogInformation("Create education handler. {@Payload}, {@MessageContext}", arg, messageContext);
+			return new Ack();
 		}
 	}
 }

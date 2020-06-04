@@ -1,6 +1,8 @@
+using Essperta.RawRabbit.Extensions;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using RawRabbit.DependencyInjection.ServiceCollection;
+using RawRabbit.Enrichers.MessageContext;
 using Serilog;
 
 namespace Worker
@@ -30,8 +32,9 @@ namespace Worker
 							Username = "guest",
 							Password = "guest",
 							Port = 5672,
-							VirtualHost = "/"							
-						}
+							VirtualHost = "/"
+						},
+						Plugins = p => p.UseMessageContext<CustomMessageContext>()
 					});
 				});
 	}

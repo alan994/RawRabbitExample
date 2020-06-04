@@ -10,19 +10,16 @@ namespace Essperta.RawRabbit.Extensions.Publisher
 	{
 		private IBusClient busClient;
 
-		public BusPublisher(IBusClient busClient, RawRabbitOptions rawRabbitOptions)
+		public BusPublisher(IBusClient busClient)
 		{
 			this.busClient = busClient;
-			RawRabbitOptions = rawRabbitOptions;
 		}
-
-		public RawRabbitOptions RawRabbitOptions { get; }
-
+		
 		public async Task SendAsync<TCommand>(TCommand command, ICustomMessageContext messageContext)
 		{
 			await this.busClient.PublishAsync(command, ctx => {
 				ctx.UseMessageContext(messageContext).UseCustomRoutingKey(messageContext.TenantId, command.GetType());
-				
+				ctx.UsePublishConfiguration(config => config.OnExchange("Some_exchange_name"));
 			});
 		}
 	}

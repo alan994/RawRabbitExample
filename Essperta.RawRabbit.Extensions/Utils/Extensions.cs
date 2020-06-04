@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.Configuration;
+﻿using Essperta.RawRabbit.Extensions.Publisher;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using RawRabbit.Common;
 using RawRabbit.Configuration;
@@ -57,7 +58,9 @@ namespace Essperta.RawRabbit.Extensions.Utils
 
 		public static IServiceCollection AddRabbitMq(this IServiceCollection services, RawRabbitConfiguration rawRabbitConfiguration)
 		{
+			rawRabbitConfiguration.PublishConfirmTimeout = TimeSpan.MaxValue;
 			services.RegisterRawRabbitSettings();
+			services.AddTransient<IBusPublisher, BusPublisher>();
 			services.AddRawRabbit(new RawRabbitOptions()
 			{
 				ClientConfiguration = rawRabbitConfiguration,

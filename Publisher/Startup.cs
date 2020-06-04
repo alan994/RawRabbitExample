@@ -31,10 +31,9 @@ namespace Publisher
 		{
 			services.AddControllers();
 
-			RawRabbitConfiguration rawRabbitConfiguration = null;
-			this.configuration.GetSection("RabbitMq").Bind(rawRabbitConfiguration);
+			var rawRabbitConfiguration = configuration.GetOptions<RawRabbitConfiguration>("RabbitMq");
 
-			if(rawRabbitConfiguration == null)
+			if (rawRabbitConfiguration == null)
 			{
 				throw new ArgumentNullException("Can't find raw rabbit configuration.");
 			}

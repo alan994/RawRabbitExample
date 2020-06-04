@@ -5,6 +5,8 @@ using Microsoft.Extensions.Logging;
 using RawRabbit;
 using RawRabbit.Pipe;
 using Shared;
+using System;
+using System.Diagnostics;
 using System.Threading.Tasks;
 
 namespace Publisher.Controllers
@@ -23,7 +25,7 @@ namespace Publisher.Controllers
 
 		[HttpGet("createEducation/essperta")]
 		public async Task<ActionResult> PublishCreateEducationForEssperta()
-		{
+		{			
 			var command = new CreateEducation()
 			{
 				Name = "Essperta education",
@@ -32,8 +34,14 @@ namespace Publisher.Controllers
 
 			await this.publisher.SendAsync(command, new CustomMessageContext()
 			{
-				
+				TenantExternalId = "essperta external id",
+				TenantId = Guid.NewGuid(),
+				UserExternalId = "essperta user external id",
+				UserId = Guid.NewGuid(),
+				GlobalRequestId = Guid.NewGuid()				
 			});
+
+			var activity = Activity.Current.Id;
 
 			return this.Ok("Poslano");
 		}
